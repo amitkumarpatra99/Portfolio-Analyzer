@@ -1,0 +1,148 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import ScoreRing from "@/components/ScoreRing";
+import { Trash2, FileSearch, Loader2, History } from "lucide-react";
+
+interface Analysis {
+  _id: string;
+  fileName: string;
+  score: number;
+  atsScore: number;
+  skills: string[];
+  strengths: string[];
+  weaknesses: string[];
+  summary: string;
+  createdAt: string;
+  jobMatch?: { matchScore: number };
+}
+
+export default function HistoryPage() {
+  const { status } = useSession();
+  const router = useRouter();
+  const [analyses, setAnalyses] = useState<Analysis[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (status === "unauthenticated") router.push("/auth/login");
+  }, [status, router]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetch("/api/history")
+        .then((r) => r.json())
+        .then((data) => {
+          setAnalyses(Array.isArray(data) ? data : []);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+  }, [status]);
+
+  const handleDelete = async (id: string) => {
+    setDeleting(id);
+    await fetch(`/api/history?id=${id}`, { method: "DELETE" });
+    setAnalyses((prev) => prev.filter((a) => a._id !== id));
+    setDeleting(null);
+  };
+
+  if (loading || status === "loading") {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 64px)" }}>
+        <Loader2 size={32} color="#8b5cf6" style={{ animation: "spin 1s linear infinite" }} />
+        <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
+  return (
+    <div className="hero-bg" style={{ minHeight: "calc(100vh - 64px)", padding: "2.5rem 1.5rem" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        <div style={{ marginBottom: "2rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <History size={28} color="#8b5cf6" />
+          <div>
+            <h1 style={{ fontFamily: "Sora, Inter, sans-serif", fontSize: "2rem", fontWeight: 700, color: "#f1f5f9" }}>
+              Analysis History
+            </h1>
+            <p style={{ color: "#64748b" }}>View all your past resume analyses</p>
+          </div>
+        </div>
+
+        {analyses.length === 0 ? (
+          <div className="glass" style={{ borderRadius: "1.25rem", padding: "4rem 2rem", textAlign: "center" }}>
+            <FileSearch size={48} color="#334155" style={{ margin: "0 auto 1rem" }} />
+            <h3 style={{ color: "#f1f5f9", fontWeight: 600, marginBottom: "0.5rem" }}>No analyses yet</h3>
+            <p style={{ color: "#64748b", marginBottom: "1.5rem" }}>Upload your first resume to get started</p>
+            <button className="btn-primary" onClick={() => router.push("/analyze")}>
+              Analyze Resume
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            {analyses.map((a) => (
+              <div key={a._id} className="glass" style={{ borderRadius: "1.25rem", padding: "1.5rem", display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
+                <ScoreRing score={a.score} size={80} strokeWidth={7} label="" />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", flexWrap: "wrap" }}>
+                    <div>
+                      <h3 style={{ fontWeight: 700, color: "#f1f5f9", fontSize: "1rem", marginBottom: "0.2rem" }}>{a.fileName}</h3>
+                      <p style={{ color: "#64748b", fontSize: "0.8125rem" }}>
+                        {new Date(a.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                      </p>
+                    </div>
+                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                      <span className={`chip ${a.score >= 70 ? "chip-green" : a.score >= 50 ? "chip-blue" : "chip-red"}`}>
+                        {a.score >= 70 ? "Good" : a.score >= 50 ? "Fair" : "Needs Work"}
+                      </span>
+                      <button
+                        onClick={() => handleDelete(a._id)}
+                        disabled={deleting === a._id}
+                        style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "0.5rem", padding: "0.4rem 0.6rem", cursor: "pointer", color: "#ef4444", display: "flex", alignItems: "center" }}
+                      >
+                        {deleting === a._id ? <Loader2 size={14} style={{ animation: "spin 1s linear infinite" }} /> : <Trash2 size={14} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "1.5rem", marginTop: "0.875rem", flexWrap: "wrap" }}>
+                    <div>
+                      <span style={{ color: "#64748b", fontSize: "0.75rem" }}>ATS Score</span>
+                      <div style={{ color: "#f1f5f9", fontWeight: 700, fontSize: "1.125rem" }}>{a.atsScore}/100</div>
+                    </div>
+                    {a.jobMatch && (
+                      <div>
+                        <span style={{ color: "#64748b", fontSize: "0.75rem" }}>Job Match</span>
+                        <div style={{ color: "#f1f5f9", fontWeight: 700, fontSize: "1.125rem" }}>{a.jobMatch.matchScore}%</div>
+                      </div>
+                    )}
+                  </div>
+
+                  {a.summary && (
+                    <p style={{ color: "#64748b", fontSize: "0.875rem", marginTop: "0.75rem", lineHeight: 1.6 }}>
+                      {a.summary}
+                    </p>
+                  )}
+
+                  {a.skills.length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginTop: "0.875rem" }}>
+                      {a.skills.slice(0, 6).map((s) => (
+                        <span key={s} className="chip chip-purple" style={{ fontSize: "0.75rem", padding: "0.2rem 0.65rem" }}>{s}</span>
+                      ))}
+                      {a.skills.length > 6 && (
+                        <span className="chip chip-blue" style={{ fontSize: "0.75rem", padding: "0.2rem 0.65rem" }}>+{a.skills.length - 6}</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+}

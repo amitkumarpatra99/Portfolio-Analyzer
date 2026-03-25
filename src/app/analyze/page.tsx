@@ -1,0 +1,330 @@
+"use client";
+
+import { useState, useCallback, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useDropzone } from "react-dropzone";
+import ScoreRing from "@/components/ScoreRing";
+import {
+  Upload, FileText, Loader2, CheckCircle, XCircle, Lightbulb,
+  Target, Zap, ChevronDown, ChevronUp, AlertCircle, Sparkles,
+} from "lucide-react";
+
+interface AnalysisData {
+  id: string;
+  score: number;
+  atsScore: number;
+  summary: string;
+  strengths: string[];
+  weaknesses: string[];
+  skills: string[];
+  missingKeywords: string[];
+  improvements: string[];
+  jobMatch?: {
+    matchScore: number;
+    matchedSkills: string[];
+    missingSkills: string[];
+    tailoringSuggestions: string[];
+    summary: string;
+  };
+}
+
+function Section({ title, icon, children, defaultOpen = false }: {
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="glass" style={{ borderRadius: "1rem", overflow: "hidden" }}>
+      <button
+        onClick={() => setOpen(!open)}
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "1.125rem 1.25rem",
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          color: "#f1f5f9",
+        }}
+      >
+        <span style={{ display: "flex", alignItems: "center", gap: "0.6rem", fontWeight: 600, fontSize: "0.9375rem" }}>
+          {icon} {title}
+        </span>
+        {open ? <ChevronUp size={16} color="#64748b" /> : <ChevronDown size={16} color="#64748b" />}
+      </button>
+      {open && <div style={{ padding: "0 1.25rem 1.25rem" }}>{children}</div>}
+    </div>
+  );
+}
+
+export default function AnalyzePage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [file, setFile] = useState<File | null>(null);
+  const [jobDesc, setJobDesc] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [result, setResult] = useState<AnalysisData | null>(null);
+
+  useEffect(() => {
+    if (status === "unauthenticated") router.push("/auth/login");
+  }, [status, router]);
+
+  const onDrop = useCallback((accepted: File[]) => {
+    if (accepted[0]) {
+      setFile(accepted[0]);
+      setResult(null);
+      setError("");
+    }
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { "application/pdf": [".pdf"] },
+    maxFiles: 1,
+    maxSize: 5 * 1024 * 1024,
+  });
+
+  const handleAnalyze = async () => {
+    if (!file) return;
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData();
+    formData.append("resume", file);
+    if (jobDesc.trim()) formData.append("jobDescription", jobDesc);
+
+    try {
+      const res = await fetch("/api/analyze", { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Analysis failed");
+      setResult(data);
+    } catch (e) {
+      setError((e as Error).message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="hero-bg" style={{ minHeight: "calc(100vh - 64px)", padding: "2.5rem 1.5rem" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ marginBottom: "2rem" }}>
+          <h1 style={{ fontFamily: "Sora, Inter, sans-serif", fontSize: "2rem", fontWeight: 700, color: "#f1f5f9", marginBottom: "0.375rem" }}>
+            Resume Analyzer
+          </h1>
+          <p style={{ color: "#64748b" }}>Upload your resume and get instant AI-powered insights</p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: result ? "1fr 1.4fr" : "1fr", gap: "1.5rem" }}>
+          {/* Upload Panel */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+            {/* Dropzone */}
+            <div
+              {...getRootProps()}
+              className="glass"
+              style={{
+                borderRadius: "1.25rem",
+                padding: "2.5rem 1.5rem",
+                textAlign: "center",
+                cursor: "pointer",
+                border: isDragActive
+                  ? "2px dashed #8b5cf6"
+                  : file
+                  ? "2px dashed #10b981"
+                  : "2px dashed rgba(255,255,255,0.1)",
+                transition: "all 0.2s",
+                background: isDragActive ? "rgba(139, 92, 246, 0.05)" : undefined,
+              }}
+            >
+              <input {...getInputProps()} />
+              {file ? (
+                <>
+                  <FileText size={40} color="#10b981" style={{ margin: "0 auto 1rem" }} />
+                  <p style={{ color: "#10b981", fontWeight: 600, marginBottom: "0.25rem" }}>{file.name}</p>
+                  <p style={{ color: "#64748b", fontSize: "0.8125rem" }}>
+                    {(file.size / 1024).toFixed(1)} KB · Click to change
+                  </p>
+                </>
+              ) : (
+                <>
+                  <Upload size={40} color={isDragActive ? "#8b5cf6" : "#475569"} style={{ margin: "0 auto 1rem" }} />
+                  <p style={{ color: "#f1f5f9", fontWeight: 600, marginBottom: "0.25rem" }}>
+                    {isDragActive ? "Drop it here!" : "Drop your resume here"}
+                  </p>
+                  <p style={{ color: "#64748b", fontSize: "0.875rem" }}>or click to browse · PDF only · max 5MB</p>
+                </>
+              )}
+            </div>
+
+            {/* Job description */}
+            <div className="glass" style={{ borderRadius: "1.25rem", padding: "1.25rem" }}>
+              <label style={{ display: "block", fontWeight: 600, color: "#f1f5f9", fontSize: "0.9375rem", marginBottom: "0.75rem" }}>
+                <Target size={16} style={{ display: "inline", marginRight: "0.4rem", verticalAlign: "middle" }} />
+                Job Description <span style={{ color: "#64748b", fontSize: "0.8125rem", fontWeight: 400 }}>(optional)</span>
+              </label>
+              <textarea
+                className="input"
+                placeholder="Paste the job description here to see how well your resume matches..."
+                rows={5}
+                value={jobDesc}
+                onChange={(e) => setJobDesc(e.target.value)}
+                style={{ resize: "vertical", fontFamily: "inherit" }}
+              />
+            </div>
+
+            {error && (
+              <div style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: "0.875rem", padding: "0.875rem 1rem", display: "flex", alignItems: "flex-start", gap: "0.5rem", color: "#fca5a5", fontSize: "0.875rem" }}>
+                <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} />
+                {error}
+              </div>
+            )}
+
+            <button
+              className="btn-primary"
+              onClick={handleAnalyze}
+              disabled={!file || loading}
+              style={{ width: "100%", justifyContent: "center", fontSize: "1rem", padding: "0.9rem", opacity: !file || loading ? 0.6 : 1, cursor: !file ? "not-allowed" : "pointer" }}
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={18} style={{ animation: "spin 1s linear infinite" }} />
+                  Analyzing with AI...
+                </>
+              ) : (
+                <>
+                  <Sparkles size={18} />
+                  Analyze Resume
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Results Panel */}
+          {result && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {/* Score cards */}
+              <div className="glass" style={{ borderRadius: "1.25rem", padding: "1.5rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap", gap: "1rem" }}>
+                  <ScoreRing score={result.score} size={130} label="Overall Score" />
+                  <ScoreRing score={result.atsScore} size={130} label="ATS Score" color="#06b6d4" />
+                  {result.jobMatch && (
+                    <ScoreRing score={result.jobMatch.matchScore} size={130} label="Job Match" color="#10b981" />
+                  )}
+                </div>
+                {result.summary && (
+                  <p style={{ color: "#94a3b8", fontSize: "0.9rem", textAlign: "center", marginTop: "1.25rem", lineHeight: 1.6 }}>
+                    {result.summary}
+                  </p>
+                )}
+              </div>
+
+              {/* Strengths */}
+              <Section title="Strengths" icon={<CheckCircle size={16} color="#10b981" />} defaultOpen>
+                <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  {result.strengths.map((s, i) => (
+                    <li key={i} style={{ display: "flex", gap: "0.6rem", color: "#94a3b8", fontSize: "0.9rem" }}>
+                      <CheckCircle size={15} color="#10b981" style={{ flexShrink: 0, marginTop: 2 }} />
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </Section>
+
+              {/* Weaknesses */}
+              <Section title="Areas to Improve" icon={<XCircle size={16} color="#ef4444" />} defaultOpen>
+                <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  {result.weaknesses.map((w, i) => (
+                    <li key={i} style={{ display: "flex", gap: "0.6rem", color: "#94a3b8", fontSize: "0.9rem" }}>
+                      <XCircle size={15} color="#ef4444" style={{ flexShrink: 0, marginTop: 2 }} />
+                      {w}
+                    </li>
+                  ))}
+                </ul>
+              </Section>
+
+              {/* Improvements */}
+              <Section title="Actionable Tips" icon={<Lightbulb size={16} color="#f59e0b" />}>
+                <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  {result.improvements.map((tip, i) => (
+                    <li key={i} style={{ display: "flex", gap: "0.6rem", color: "#94a3b8", fontSize: "0.9rem" }}>
+                      <Lightbulb size={15} color="#f59e0b" style={{ flexShrink: 0, marginTop: 2 }} />
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
+              </Section>
+
+              {/* Skills */}
+              {result.skills.length > 0 && (
+                <Section title="Detected Skills" icon={<Zap size={16} color="#8b5cf6" />}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                    {result.skills.map((s) => (
+                      <span key={s} className="chip chip-purple">{s}</span>
+                    ))}
+                  </div>
+                </Section>
+              )}
+
+              {/* Missing Keywords */}
+              {result.missingKeywords.length > 0 && (
+                <Section title="Missing Keywords" icon={<AlertCircle size={16} color="#f59e0b" />}>
+                  <p style={{ color: "#64748b", fontSize: "0.8125rem", marginBottom: "0.75rem" }}>
+                    Add these keywords to improve your ATS score:
+                  </p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                    {result.missingKeywords.map((k) => (
+                      <span key={k} className="chip chip-cyan">{k}</span>
+                    ))}
+                  </div>
+                </Section>
+              )}
+
+              {/* Job Match Details */}
+              {result.jobMatch && (
+                <Section title="Job Match Details" icon={<Target size={16} color="#10b981" />} defaultOpen>
+                  <p style={{ color: "#94a3b8", fontSize: "0.875rem", marginBottom: "1rem", lineHeight: 1.6 }}>
+                    {result.jobMatch.summary}
+                  </p>
+                  <div style={{ marginBottom: "1rem" }}>
+                    <p style={{ color: "#10b981", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>✓ Matched Skills</p>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                      {result.jobMatch.matchedSkills.map((s) => <span key={s} className="chip chip-green">{s}</span>)}
+                    </div>
+                  </div>
+                  <div style={{ marginBottom: "1rem" }}>
+                    <p style={{ color: "#ef4444", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>✗ Missing Skills</p>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                      {result.jobMatch.missingSkills.map((s) => <span key={s} className="chip chip-red">{s}</span>)}
+                    </div>
+                  </div>
+                  <div>
+                    <p style={{ color: "#f59e0b", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>💡 Tailoring Suggestions</p>
+                    <ul style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                      {result.jobMatch.tailoringSuggestions.map((t, i) => (
+                        <li key={i} style={{ color: "#94a3b8", fontSize: "0.875rem", display: "flex", gap: "0.4rem" }}>
+                          <span style={{ color: "#f59e0b" }}>•</span> {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Section>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @media (max-width: 768px) {
+          .analyze-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </div>
+  );
+}
