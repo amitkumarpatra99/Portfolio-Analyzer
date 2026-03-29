@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ScoreRing from "@/components/ScoreRing";
-import { FileSearch, History, TrendingUp, Award, ArrowRight, Loader2 } from "lucide-react";
+import { FileSearch, TrendingUp, Award, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 
 interface Analysis {
@@ -63,7 +63,7 @@ export default function DashboardPage() {
         {/* Header */}
         <div style={{ marginBottom: "2rem" }}>
           <h1 style={{ fontFamily: "Sora, Inter, sans-serif", fontSize: "2rem", fontWeight: 700, color: "#f1f5f9", marginBottom: "0.375rem" }}>
-            Welcome back, {session?.user?.name?.split(" ")[0]} 👋
+            Welcome back, {session?.user?.name?.split(" ")[0]}
           </h1>
           <p style={{ color: "#64748b" }}>Here&apos;s an overview of your resume performance</p>
         </div>
@@ -121,7 +121,7 @@ export default function DashboardPage() {
                         {a.fileName}
                       </div>
                       <div style={{ color: "#64748b", fontSize: "0.8125rem", marginTop: "0.2rem" }}>
-                        ATS: {a.atsScore}/100 · {new Date(a.createdAt).toLocaleDateString()}
+                        ATS: {a.atsScore}/100 - {new Date(a.createdAt).toLocaleDateString()}
                       </div>
                     </div>
                     <span className={`chip ${a.score >= 70 ? "chip-green" : a.score >= 50 ? "chip-blue" : "chip-red"}`}>

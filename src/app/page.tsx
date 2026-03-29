@@ -95,7 +95,7 @@ export default function LandingPage() {
           }}
         >
           Upload your resume and get an instant AI-powered score, ATS feedback, keyword analysis,
-          and job match insights — all in seconds.
+          and job match insights - all in seconds.
         </p>
 
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
@@ -251,7 +251,7 @@ export default function LandingPage() {
             position: "relative",
           }}
         >
-          {steps.map((s, i) => (
+          {steps.map((s) => (
             <div key={s.step} style={{ flex: "1 1 200px", maxWidth: 260 }}>
               <div
                 style={{
@@ -318,3 +318,4 @@ export default function LandingPage() {
     </div>
   );
 }
+

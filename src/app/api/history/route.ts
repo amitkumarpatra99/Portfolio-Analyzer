@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import connectDB from "@/lib/mongodb";
 import Analysis from "@/models/Analysis";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const session = await getServerSession();
     if (!session?.user) {
@@ -44,3 +44,4 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+

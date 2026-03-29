@@ -63,7 +63,7 @@ function Section({ title, icon, children, defaultOpen = false }: {
 }
 
 export default function AnalyzePage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [jobDesc, setJobDesc] = useState("");
@@ -148,7 +148,7 @@ export default function AnalyzePage() {
                   <FileText size={40} color="#10b981" style={{ margin: "0 auto 1rem" }} />
                   <p style={{ color: "#10b981", fontWeight: 600, marginBottom: "0.25rem" }}>{file.name}</p>
                   <p style={{ color: "#64748b", fontSize: "0.8125rem" }}>
-                    {(file.size / 1024).toFixed(1)} KB · Click to change
+                    {(file.size / 1024).toFixed(1)} KB - Click to change
                   </p>
                 </>
               ) : (
@@ -157,7 +157,7 @@ export default function AnalyzePage() {
                   <p style={{ color: "#f1f5f9", fontWeight: 600, marginBottom: "0.25rem" }}>
                     {isDragActive ? "Drop it here!" : "Drop your resume here"}
                   </p>
-                  <p style={{ color: "#64748b", fontSize: "0.875rem" }}>or click to browse · PDF only · max 5MB</p>
+                  <p style={{ color: "#64748b", fontSize: "0.875rem" }}>or click to browse - PDF only - max 5MB</p>
                 </>
               )}
             </div>
@@ -292,23 +292,23 @@ export default function AnalyzePage() {
                     {result.jobMatch.summary}
                   </p>
                   <div style={{ marginBottom: "1rem" }}>
-                    <p style={{ color: "#10b981", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>✓ Matched Skills</p>
+                    <p style={{ color: "#10b981", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>Matched Skills</p>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
                       {result.jobMatch.matchedSkills.map((s) => <span key={s} className="chip chip-green">{s}</span>)}
                     </div>
                   </div>
                   <div style={{ marginBottom: "1rem" }}>
-                    <p style={{ color: "#ef4444", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>✗ Missing Skills</p>
+                    <p style={{ color: "#ef4444", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>Missing Skills</p>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
                       {result.jobMatch.missingSkills.map((s) => <span key={s} className="chip chip-red">{s}</span>)}
                     </div>
                   </div>
                   <div>
-                    <p style={{ color: "#f59e0b", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>💡 Tailoring Suggestions</p>
+                    <p style={{ color: "#f59e0b", fontSize: "0.8125rem", fontWeight: 600, marginBottom: "0.5rem" }}>Tailoring Suggestions</p>
                     <ul style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                       {result.jobMatch.tailoringSuggestions.map((t, i) => (
                         <li key={i} style={{ color: "#94a3b8", fontSize: "0.875rem", display: "flex", gap: "0.4rem" }}>
-                          <span style={{ color: "#f59e0b" }}>•</span> {t}
+                          <span style={{ color: "#f59e0b" }}>-</span> {t}
                         </li>
                       ))}
                     </ul>
