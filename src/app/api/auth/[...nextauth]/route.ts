@@ -4,10 +4,9 @@ import bcrypt from "bcryptjs";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
 
-const handler = NextAuth({
+export const { handlers, auth } = NextAuth({
   providers: [
     CredentialsProvider({
-      name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -15,26 +14,31 @@ const handler = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        await connectDB();
-        const user = await User.findOne({ email: credentials.email.toLowerCase() });
-        if (!user) return null;
+        try {
+          await connectDB();
+          const user = await User.findOne({ email: credentials.email.toLowerCase() });
+          if (!user) return null;
 
-        const isValid = await bcrypt.compare(credentials.password, user.password);
-        if (!isValid) return null;
+          const isValid = await bcrypt.compare(credentials.password, user.password);
+          if (!isValid) return null;
 
-        return { id: user._id.toString(), name: user.name, email: user.email };
+          return { id: user._id.toString(), name: user.name, email: user.email };
+        } catch (error) {
+          console.error("Auth error:", error);
+          return null;
+        }
       },
     }),
   ],
   session: { strategy: "jwt" },
   callbacks: {
-    async jwt({ token, user }) {
+    jwt({ token, user }: any) {
       if (user) token.id = user.id;
       return token;
     },
-    async session({ session, token }) {
+    session({ session, token }: any) {
       if (token && session.user) {
-        (session.user as { id?: string }).id = token.id as string;
+        session.user.id = token.id as string;
       }
       return session;
     },
@@ -45,4 +49,4 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
 });
 
-export { handler as GET, handler as POST };
+export const { GET, POST } = handlers;
