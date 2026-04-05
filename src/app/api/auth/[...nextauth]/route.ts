@@ -1,13 +1,22 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import type { JWT } from "next-auth/jwt";
-import type { Session } from "next-auth";
 import bcrypt from "bcryptjs";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
 
-export const { handlers, auth } = NextAuth({
-  debug: true, // Enable for development
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id?: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+}
+
+const config = {
+  debug: true,
   providers: [
     CredentialsProvider({
       credentials: {
@@ -33,15 +42,17 @@ export const { handlers, auth } = NextAuth({
       },
     }),
   ],
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt" as const },
   callbacks: {
-    jwt({ token, user }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    jwt({ token, user }: any) {
       if (user) {
-        token.id = (user as { id: string }).id;
+        token.id = user.id;
       }
       return token;
     },
-    session({ session, token }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id as string;
       }
@@ -52,6 +63,7 @@ export const { handlers, auth } = NextAuth({
     signIn: "/auth/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
 
+export const { handlers, auth } = NextAuth(config);
 export const { GET, POST } = handlers;
