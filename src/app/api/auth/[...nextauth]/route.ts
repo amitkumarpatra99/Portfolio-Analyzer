@@ -5,6 +5,7 @@ import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
 
 export const { handlers, auth } = NextAuth({
+  debug: true, // Enable for development
   providers: [
     CredentialsProvider({
       credentials: {
