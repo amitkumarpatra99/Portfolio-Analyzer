@@ -1,5 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import type { JWT } from "next-auth/jwt";
+import type { Session } from "next-auth";
 import bcrypt from "bcryptjs";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
@@ -33,12 +35,14 @@ export const { handlers, auth } = NextAuth({
   ],
   session: { strategy: "jwt" },
   callbacks: {
-    jwt({ token, user }: any) {
-      if (user) token.id = user.id;
+    jwt({ token, user }) {
+      if (user) {
+        token.id = (user as { id: string }).id;
+      }
       return token;
     },
-    session({ session, token }: any) {
-      if (token && session.user) {
+    session({ session, token }) {
+      if (session.user) {
         session.user.id = token.id as string;
       }
       return session;

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { auth } from "@/app/api/auth/[...nextauth]/route";
 import connectDB from "@/lib/mongodb";
 import Analysis from "@/models/Analysis";
 
 export async function GET() {
   try {
-    const session = await getServerSession();
+    const session = await auth();
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -26,7 +26,7 @@ export async function GET() {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await auth();
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
