@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "next-auth";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import Analysis from "@/models/Analysis";
 import { analyzeResume, matchJobDescription } from "@/lib/gemini";
@@ -8,7 +9,7 @@ const pdfParse = require("pdf-parse");
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth();
+    const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
