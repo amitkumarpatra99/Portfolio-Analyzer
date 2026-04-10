@@ -40,15 +40,16 @@ export default function LandingPage() {
   const router = useRouter();
 
   return (
+    <>
     <div className="hero-bg" style={{ minHeight: "calc(100vh - 64px)" }}>
       {/* Hero */}
       <section
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "6rem 1.5rem 4rem",
           textAlign: "center",
         }}
+        className="hero-section"
       >
         {/* Badge */}
         <div
@@ -145,7 +146,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "4rem 1.5rem" }}>
+      <section className="features-section" style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
           <h2
             style={{
@@ -226,9 +227,9 @@ export default function LandingPage() {
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "4rem 1.5rem 6rem",
           textAlign: "center",
         }}
+        className="how-it-works-section"
       >
         <h2
           style={{
@@ -281,11 +282,10 @@ export default function LandingPage() {
         {/* CTA */}
         <div style={{ marginTop: "4rem" }}>
           <div
-            className="glass"
+            className="glass cta-box"
             style={{
               display: "inline-block",
               borderRadius: "1.5rem",
-              padding: "3rem 4rem",
               background:
                 "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))",
               border: "1px solid rgba(139, 92, 246, 0.2)",
@@ -316,6 +316,19 @@ export default function LandingPage() {
         </div>
       </section>
     </div>
+      <style>{`
+        .hero-section { padding: 6rem 1.5rem 4rem; }
+        .features-section { padding: 4rem 1.5rem; }
+        .how-it-works-section { padding: 4rem 1.5rem 6rem; }
+        .cta-box { padding: 3rem 4rem; }
+        @media (max-width: 768px) {
+          .hero-section { padding: 3rem 1rem 2rem; }
+          .features-section { padding: 2rem 1rem; }
+          .how-it-works-section { padding: 2rem 1rem 3rem; }
+          .cta-box { padding: 2rem 1.5rem; }
+        }
+      `}</style>
+    </>
   );
 }
 

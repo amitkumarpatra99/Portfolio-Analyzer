@@ -121,7 +121,7 @@ export default function AnalyzePage() {
           <p style={{ color: "#64748b" }}>Upload your resume and get instant AI-powered insights</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: result ? "1fr 1.4fr" : "1fr", gap: "1.5rem" }}>
+        <div className={`analyze-grid ${result ? "has-result" : ""}`} style={{ gap: "1.5rem" }}>
           {/* Upload Panel */}
           <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
             {/* Dropzone */}
@@ -321,8 +321,12 @@ export default function AnalyzePage() {
       </div>
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .analyze-grid { display: grid; grid-template-columns: 1fr; }
+        @media (min-width: 769px) {
+          .analyze-grid.has-result { grid-template-columns: 1fr 1.4fr; }
+        }
         @media (max-width: 768px) {
-          .analyze-grid { grid-template-columns: 1fr !important; }
+          .analyze-grid.has-result { grid-template-columns: 1fr; }
         }
       `}</style>
     </div>
