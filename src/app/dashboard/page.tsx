@@ -89,7 +89,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Main content */}
-        <div style={{ display: "grid", gridTemplateColumns: analyses.length > 0 ? "1fr 320px" : "1fr", gap: "1.5rem" }}>
+        <div className={`dashboard-grid ${analyses.length > 0 ? "has-data" : ""}`} style={{ gap: "1.5rem" }}>
           {/* Recent analyses */}
           <div className="glass" style={{ borderRadius: "1.25rem", padding: "1.5rem" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
@@ -155,7 +155,16 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
-      <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr; }
+        @media (min-width: 769px) {
+          .dashboard-grid.has-data { grid-template-columns: 1fr 320px; }
+        }
+        @media (max-width: 768px) {
+          .dashboard-grid.has-data { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </div>
   );
 }
