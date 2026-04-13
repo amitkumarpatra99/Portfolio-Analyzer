@@ -29,7 +29,8 @@ export async function POST(req: NextRequest) {
     await User.create({ name, email: email.toLowerCase(), password: hashedPassword });
 
     return NextResponse.json({ message: "Account created successfully" }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  } catch (error: any) {
+    console.error("REGISTER ERROR:", error);
+    return NextResponse.json({ error: error.message || "Server error" }, { status: 500 });
   }
 }
