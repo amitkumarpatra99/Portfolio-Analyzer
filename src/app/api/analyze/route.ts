@@ -75,8 +75,8 @@ export async function POST(req: NextRequest) {
       jobMatch: jobMatchResult,
       fileName: file.name,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Analyze error:", err);
-    return NextResponse.json({ error: "Analysis failed. Please try again." }, { status: 500 });
+    return NextResponse.json({ error: err.message || "Analysis failed. Please try again." }, { status: 500 });
   }
 }
