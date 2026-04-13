@@ -12,11 +12,12 @@ interface MongooseCache {
 }
 
 declare global {
+  // eslint-disable-next-line no-var
   var mongooseCache: MongooseCache | undefined;
 }
 
-const cached: MongooseCache = global.mongooseCache ?? { conn: null, promise: null };
-global.mongooseCache = cached;
+const cached: MongooseCache = globalThis.mongooseCache ?? { conn: null, promise: null };
+globalThis.mongooseCache = cached;
 
 async function connectDB(): Promise<typeof mongoose> {
   if (cached.conn) return cached.conn;
@@ -25,7 +26,13 @@ async function connectDB(): Promise<typeof mongoose> {
     cached.promise = mongoose.connect(MONGODB_URI, { bufferCommands: false });
   }
 
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null; // Important: Clear the promise so it can be retried
+    throw e;
+  }
+
   return cached.conn;
 }
 
