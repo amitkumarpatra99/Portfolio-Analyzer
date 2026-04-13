@@ -136,8 +136,8 @@ export default function AnalyzePage() {
                 border: isDragActive
                   ? "2px dashed #8b5cf6"
                   : file
-                  ? "2px dashed #10b981"
-                  : "2px dashed rgba(255,255,255,0.1)",
+                    ? "2px dashed #10b981"
+                    : "2px dashed rgba(255,255,255,0.1)",
                 transition: "all 0.2s",
                 background: isDragActive ? "rgba(139, 92, 246, 0.05)" : undefined,
               }}
@@ -332,3 +332,5 @@ export default function AnalyzePage() {
     </div>
   );
 }
+
+

@@ -4,8 +4,7 @@ import { authOptions } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import Analysis from "@/models/Analysis";
 import { analyzeResume, matchJobDescription } from "@/lib/gemini";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const pdfParse = require("pdf-parse");
+const { PDFParse } = require("pdf-parse");
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,8 +23,10 @@ export async function POST(req: NextRequest) {
 
     // Extract text from PDF
     const buffer = Buffer.from(await file.arrayBuffer());
-    const pdfData = await pdfParse(buffer);
+    const parser = new PDFParse({ data: buffer });
+    const pdfData = await parser.getText();
     const resumeText = pdfData.text?.trim();
+    await parser.destroy().catch(() => {});
 
     if (!resumeText || resumeText.length < 50) {
       return NextResponse.json(
