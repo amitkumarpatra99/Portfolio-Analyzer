@@ -231,29 +231,6 @@ export default function LandingPage() {
             })}
           </div>
         </section>
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: "1.25rem",
-                    }}
-                  >
-                    <Icon size={24} color={f.color} />
-                  </div>
-                  <h3
-                    style={{
-                      fontSize: "1.125rem",
-                      fontWeight: 700,
-                      color: "#f1f5f9",
-                      marginBottom: "0.625rem",
-                    }}
-                  >
-                    {f.title}
-                  </h3>
-                  <p style={{ color: "#64748b", lineHeight: 1.7, fontSize: "0.9375rem" }}>{f.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </section>
 
         {/* How it works */}
         <section className="how-it-works-section">
@@ -344,12 +321,6 @@ export default function LandingPage() {
                 borderRadius: "1.5rem",
                 border: "1px solid rgba(139, 92, 246, 0.3)",
                 boxShadow: "0 16px 48px rgba(139, 92, 246, 0.2)",
-              }}
-            >
-                borderRadius: "1.5rem",
-                background:
-                  "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))",
-                border: "1px solid rgba(139, 92, 246, 0.2)",
               }}
             >
               <BrainCircuit size={40} color="#8b5cf6" style={{ marginBottom: "1rem" }} />

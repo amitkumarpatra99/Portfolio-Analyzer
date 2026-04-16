@@ -160,13 +160,6 @@ export default function Navbar() {
                 <Icon size={18} />
                 {link.label}
               </Link>
-                  color: "#f1f5f9",
-                  background: "rgba(255,255,255,0.04)",
-                }}
-              >
-                <Icon size={16} />
-                {link.label}
-              </Link>
             );
           })}
           {session ? (
