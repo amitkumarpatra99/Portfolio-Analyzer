@@ -58,30 +58,71 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="hero-bg" style={{ minHeight: "calc(100vh - 64px)", padding: "2.5rem 1.5rem" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+    <div className="hero-bg" style={{ minHeight: "calc(100vh - 72px)", padding: "3rem 2rem" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         {/* Header */}
-        <div style={{ marginBottom: "2rem" }}>
-          <h1 style={{ fontFamily: "Sora, Inter, sans-serif", fontSize: "2rem", fontWeight: 700, color: "#f1f5f9", marginBottom: "0.375rem" }}>
+        <div style={{ marginBottom: "3rem" }}>
+          <h1 style={{
+            fontFamily: "Sora, Inter, sans-serif",
+            fontSize: "clamp(2rem, 5vw, 2.5rem)",
+            fontWeight: 700,
+            color: "#f1f5f9",
+            marginBottom: "0.5rem"
+          }}>
             Welcome back, {session?.user?.name?.split(" ")[0]}
           </h1>
-          <p style={{ color: "#64748b" }}>Here&apos;s an overview of your resume performance</p>
+          <p style={{ color: "#64748b", fontSize: "clamp(1rem, 2vw, 1.125rem)" }}>
+            Here&apos;s an overview of your resume performance
+          </p>
         </div>
 
         {/* Stats cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", marginBottom: "2rem" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "1.5rem",
+          marginBottom: "3rem"
+        }}>
           {stats.map((s) => {
             const Icon = s.icon;
             return (
-              <div key={s.label} className="glass" style={{ borderRadius: "1.25rem", padding: "1.5rem", display: "flex", alignItems: "center", gap: "1rem" }}>
-                <div style={{ width: 48, height: 48, borderRadius: "0.875rem", background: s.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <Icon size={22} color={s.color} />
+              <div key={s.label} className="glass-card" style={{
+                borderRadius: "1.25rem",
+                padding: "2rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "1.25rem",
+                border: `1px solid ${s.color}20`,
+                boxShadow: `0 8px 24px ${s.color}15`,
+              }}>
+                <div style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: "1rem",
+                  background: s.bg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  border: `1px solid ${s.color}30`,
+                }}>
+                  <Icon size={24} color={s.color} />
                 </div>
                 <div>
-                  <div style={{ fontSize: "1.875rem", fontWeight: 800, color: "#f1f5f9", lineHeight: 1, fontFamily: "Sora, Inter, sans-serif" }}>
+                  <div style={{
+                    fontSize: "2rem",
+                    fontWeight: 800,
+                    color: "#f1f5f9",
+                    lineHeight: 1,
+                    fontFamily: "Sora, Inter, sans-serif"
+                  }}>
                     {s.value}{s.suffix ?? ""}
                   </div>
-                  <div style={{ fontSize: "0.8125rem", color: "#64748b", marginTop: "0.25rem" }}>{s.label}</div>
+                  <div style={{
+                    fontSize: "0.875rem",
+                    color: "#64748b",
+                    marginTop: "0.25rem"
+                  }}>{s.label}</div>
                 </div>
               </div>
             );
@@ -89,15 +130,42 @@ export default function DashboardPage() {
         </div>
 
         {/* Main content */}
-        <div className={`dashboard-grid ${analyses.length > 0 ? "has-data" : ""}`} style={{ gap: "1.5rem" }}>
+        <div className={`dashboard-grid ${analyses.length > 0 ? "has-data" : ""}`} style={{ gap: "2rem" }}>
           {/* Recent analyses */}
-          <div className="glass" style={{ borderRadius: "1.25rem", padding: "1.5rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-              <h2 style={{ fontWeight: 700, color: "#f1f5f9", fontSize: "1.125rem" }}>
+          <div className="glass-card" style={{
+            borderRadius: "1.5rem",
+            padding: "2rem",
+            border: "1px solid rgba(255,255,255,0.08)"
+          }}>
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "1.5rem",
+              flexWrap: "wrap",
+              gap: "1rem"
+            }}>
+              <h2 style={{
+                fontWeight: 700,
+                color: "#f1f5f9",
+                fontSize: "clamp(1.125rem, 3vw, 1.25rem)"
+              }}>
                 Recent Analyses
               </h2>
               {analyses.length > 0 && (
-                <Link href="/history" style={{ color: "#a78bfa", textDecoration: "none", fontSize: "0.875rem", display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                <Link href="/history" style={{
+                  color: "#a78bfa",
+                  textDecoration: "none",
+                  fontSize: "0.875rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.25rem",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.5rem",
+                  background: "rgba(139, 92, 246, 0.1)",
+                  border: "1px solid rgba(139, 92, 246, 0.2)",
+                  transition: "all 0.2s ease",
+                }}>
                   View all <ArrowRight size={13} />
                 </Link>
               )}
@@ -114,13 +182,32 @@ export default function DashboardPage() {
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {analyses.slice(0, 5).map((a) => (
-                  <div key={a._id} className="glass" style={{ borderRadius: "0.875rem", padding: "1rem 1.25rem", display: "flex", alignItems: "center", gap: "1rem" }}>
-                    <ScoreRing score={a.score} size={60} strokeWidth={6} label="" />
+                  <div key={a._id} className="glass-card" style={{
+                    borderRadius: "1rem",
+                    padding: "1.25rem 1.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1.25rem",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    transition: "all 0.2s ease",
+                  }}>
+                    <ScoreRing score={a.score} size={64} strokeWidth={6} label="" />
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 600, color: "#f1f5f9", fontSize: "0.9375rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{
+                        fontWeight: 600,
+                        color: "#f1f5f9",
+                        fontSize: "1rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}>
                         {a.fileName}
                       </div>
-                      <div style={{ color: "#64748b", fontSize: "0.8125rem", marginTop: "0.2rem" }}>
+                      <div style={{
+                        color: "#64748b",
+                        fontSize: "0.875rem",
+                        marginTop: "0.2rem"
+                      }}>
                         ATS: {a.atsScore}/100 - {new Date(a.createdAt).toLocaleDateString()}
                       </div>
                     </div>
@@ -135,20 +222,44 @@ export default function DashboardPage() {
 
           {/* Top skills */}
           {analyses.length > 0 && (
-            <div className="glass" style={{ borderRadius: "1.25rem", padding: "1.5rem", alignSelf: "start" }}>
-              <h2 style={{ fontWeight: 700, color: "#f1f5f9", fontSize: "1.125rem", marginBottom: "1.25rem" }}>
+            <div className="glass-card" style={{
+              borderRadius: "1.5rem",
+              padding: "2rem",
+              alignSelf: "start",
+              border: "1px solid rgba(255,255,255,0.08)"
+            }}>
+              <h2 style={{
+                fontWeight: 700,
+                color: "#f1f5f9",
+                fontSize: "clamp(1.125rem, 3vw, 1.25rem)",
+                marginBottom: "1.5rem"
+              }}>
                 Your Top Skills
               </h2>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+              <div style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "0.75rem",
+                marginBottom: "2rem"
+              }}>
                 {allSkills.map((skill) => (
                   <span key={skill} className="chip chip-purple">{skill}</span>
                 ))}
                 {allSkills.length === 0 && <p style={{ color: "#64748b", fontSize: "0.875rem" }}>Skills will appear here after analysis.</p>}
               </div>
 
-              <div style={{ marginTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "1.5rem" }}>
-                <Link href="/analyze" className="btn-primary" style={{ textDecoration: "none", width: "100%", justifyContent: "center" }}>
-                  New Analysis <ArrowRight size={15} />
+              <div style={{
+                borderTop: "1px solid rgba(255,255,255,0.06)",
+                paddingTop: "1.5rem"
+              }}>
+                <Link href="/analyze" className="btn-primary" style={{
+                  textDecoration: "none",
+                  width: "100%",
+                  justifyContent: "center",
+                  fontSize: "1rem",
+                  padding: "0.875rem 2rem"
+                }}>
+                  New Analysis <ArrowRight size={16} />
                 </Link>
               </div>
             </div>
@@ -157,12 +268,27 @@ export default function DashboardPage() {
       </div>
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .dashboard-grid { display: grid; grid-template-columns: 1fr; }
-        @media (min-width: 769px) {
-          .dashboard-grid.has-data { grid-template-columns: 1fr 320px; }
+        .dashboard-grid {
+          display: grid;
+          grid-template-columns: 1fr;
         }
-        @media (max-width: 768px) {
+
+        @media (min-width: 1024px) {
+          .dashboard-grid.has-data { grid-template-columns: 1fr 340px; }
+        }
+
+        @media (max-width: 1023px) {
           .dashboard-grid.has-data { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+          .hero-bg { padding: 2rem 1rem; }
+          .glass-card { padding: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+          .hero-bg { padding: 1.5rem 1rem; }
+          .glass-card { padding: 1rem; }
         }
       `}</style>
     </div>

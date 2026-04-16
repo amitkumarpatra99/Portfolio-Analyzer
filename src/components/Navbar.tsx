@@ -21,25 +21,25 @@ export default function Navbar() {
 
   return (
     <nav
+      className="glass-strong"
       style={{
         position: "sticky",
         top: 0,
         zIndex: 50,
-        background: "rgba(8, 11, 20, 0.85)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        borderBottom: "1px solid rgba(255,255,255,0.1)",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
       }}
     >
       <div
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "0 1.5rem",
+          padding: "0 2rem",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 64,
+          height: 72,
         }}
       >
         {/* Logo */}
@@ -125,13 +125,15 @@ export default function Navbar() {
       {/* Mobile menu */}
       {menuOpen && (
         <div
+          className="glass-strong"
           style={{
-            background: "rgba(8, 11, 20, 0.98)",
-            borderTop: "1px solid rgba(255,255,255,0.06)",
-            padding: "1rem 1.5rem",
+            borderTop: "1px solid rgba(255,255,255,0.1)",
+            padding: "1.5rem 2rem",
             display: "flex",
             flexDirection: "column",
-            gap: "0.5rem",
+            gap: "0.75rem",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
           }}
         >
           {navLinks.map((link) => {
@@ -141,13 +143,23 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
+                className="glass-card"
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.6rem",
-                  padding: "0.75rem 1rem",
-                  borderRadius: "0.625rem",
+                  gap: "0.75rem",
+                  padding: "1rem 1.25rem",
+                  borderRadius: "0.75rem",
                   textDecoration: "none",
+                  color: "#f1f5f9",
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <Icon size={18} />
+                {link.label}
+              </Link>
                   color: "#f1f5f9",
                   background: "rgba(255,255,255,0.04)",
                 }}
@@ -174,6 +186,11 @@ export default function Navbar() {
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .mobile-menu-btn { display: block !important; }
+        }
+
+        @media (max-width: 480px) {
+          nav > div { padding: 0 1rem; height: 64px; }
+          .glass-strong { backdrop-filter: blur(16px) !important; -webkit-backdrop-filter: blur(16px) !important; }
         }
       `}</style>
     </nav>
