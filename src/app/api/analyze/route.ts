@@ -4,7 +4,8 @@ import { authOptions } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import Analysis from "@/models/Analysis";
 import { analyzeResume, matchJobDescription } from "@/lib/gemini";
-const { PDFParse } = require("pdf-parse");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const pdfParse = require("pdf-parse");
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,10 +24,8 @@ export async function POST(req: NextRequest) {
 
     // Extract text from PDF
     const buffer = Buffer.from(await file.arrayBuffer());
-    const parser = new PDFParse({ data: buffer });
-    const pdfData = await parser.getText();
+    const pdfData = await pdfParse(buffer);
     const resumeText = pdfData.text?.trim();
-    await parser.destroy().catch(() => {});
 
     if (!resumeText || resumeText.length < 50) {
       return NextResponse.json(
@@ -76,8 +75,9 @@ export async function POST(req: NextRequest) {
       jobMatch: jobMatchResult,
       fileName: file.name,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Analyze error:", err);
-    return NextResponse.json({ error: err.message || "Analysis failed. Please try again." }, { status: 500 });
+    const errorMessage = err instanceof Error ? err.message : "Analysis failed. Please try again.";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
