@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import ScoreRing from "@/components/ScoreRing";
 import { Trash2, FileSearch, Loader2, History } from "lucide-react";
@@ -93,10 +94,17 @@ export default function HistoryPage() {
                         {new Date(a.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
                       </p>
                     </div>
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
                       <span className={`chip ${a.score >= 70 ? "chip-green" : a.score >= 50 ? "chip-blue" : "chip-red"}`}>
                         {a.score >= 70 ? "Good" : a.score >= 50 ? "Fair" : "Needs Work"}
                       </span>
+                      <Link
+                        href={`/history/${a._id}`}
+                        className="btn-secondary"
+                        style={{ padding: "0.4rem 0.8rem", fontSize: "0.75rem", textDecoration: "none" }}
+                      >
+                        View details
+                      </Link>
                       <button
                         onClick={() => handleDelete(a._id)}
                         disabled={deleting === a._id}

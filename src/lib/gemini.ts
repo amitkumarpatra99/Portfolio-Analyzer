@@ -13,7 +13,7 @@ export async function analyzeResume(resumeText: string): Promise<AnalysisResult>
   "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
   "weaknesses": ["<weakness 1>", "<weakness 2>", "<weakness 3>"],
   "skills": ["<skill 1>", "<skill 2>", ...],
-  "missingKeywords": ["<keyword 1>", "<keyword 2>", ...],
+  "missingKeywords": ["<keyword 1>", "<keyword 2>", ...], 
   "improvements": ["<specific improvement 1>", "<specific improvement 2>", "<specific improvement 3>", "<specific improvement 4>"],
   "atsScore": <number 0-100>
 }

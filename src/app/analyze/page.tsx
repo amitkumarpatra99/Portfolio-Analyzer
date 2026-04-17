@@ -8,6 +8,7 @@ import ScoreRing from "@/components/ScoreRing";
 import {
   Upload, FileText, Loader2, CheckCircle, XCircle, Lightbulb,
   Target, Zap, ChevronDown, ChevronUp, AlertCircle, Sparkles,
+  Clipboard, Download,
 } from "lucide-react";
 
 interface AnalysisData {
@@ -69,6 +70,7 @@ export default function AnalyzePage() {
   const [jobDesc, setJobDesc] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [copyMessage, setCopyMessage] = useState("");
   const [result, setResult] = useState<AnalysisData | null>(null);
 
   useEffect(() => {
@@ -104,10 +106,48 @@ export default function AnalyzePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Analysis failed");
       setResult(data);
+      setCopyMessage("");
     } catch (e) {
       setError((e as Error).message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setFile(null);
+    setJobDesc("");
+    setResult(null);
+    setError("");
+    setCopyMessage("");
+  };
+
+  const handleDownloadReport = () => {
+    if (!result) return;
+    const payload = {
+      ...result,
+      downloadedAt: new Date().toISOString(),
+      reportSource: "Resume Analyzer",
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `resume-analysis-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleCopySummary = async () => {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(`Summary: ${result.summary}\n\nKey improvements: ${result.improvements.join("; ")}`);
+      setCopyMessage("Summary copied to clipboard!");
+      window.setTimeout(() => setCopyMessage(""), 2500);
+    } catch {
+      setCopyMessage("Unable to copy. Please try again.");
     }
   };
 
@@ -220,6 +260,23 @@ export default function AnalyzePage() {
                 {result.summary && (
                   <p style={{ color: "#94a3b8", fontSize: "0.9rem", textAlign: "center", marginTop: "1.25rem", lineHeight: 1.6 }}>
                     {result.summary}
+                  </p>
+                )}
+
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", justifyContent: "center", marginTop: "1.25rem" }}>
+                  <button type="button" className="btn-secondary" onClick={handleCopySummary}>
+                    <Clipboard size={16} /> Copy summary
+                  </button>
+                  <button type="button" className="btn-secondary" onClick={handleDownloadReport}>
+                    <Download size={16} /> Download report
+                  </button>
+                  <button type="button" className="btn-secondary" onClick={handleReset}>
+                    New analysis
+                  </button>
+                </div>
+                {copyMessage && (
+                  <p style={{ color: "#94a3b8", fontSize: "0.875rem", textAlign: "center", marginTop: "0.75rem" }}>
+                    {copyMessage}
                   </p>
                 )}
               </div>
