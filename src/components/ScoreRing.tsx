@@ -83,7 +83,9 @@ export default function ScoreRing({
           </span>
         </div>
       </div>
-      <span style={{ fontSize: "0.875rem", color: "#94a3b8", fontWeight: 500 }}>{label}</span>
+      {label && (
+        <span style={{ fontSize: "0.875rem", color: "#94a3b8", fontWeight: 500 }}>{label}</span>
+      )}
     </div>
   );
 }
