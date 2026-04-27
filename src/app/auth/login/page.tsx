@@ -137,7 +137,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="btn-primary"
+            className="btn-primary btn-lg"
             disabled={loading}
             style={{ width: "100%", justifyContent: "center", marginTop: "0.5rem", opacity: loading ? 0.7 : 1 }}
           >

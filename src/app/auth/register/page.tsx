@@ -103,7 +103,7 @@ export default function RegisterPage() {
             <input type="password" placeholder="Password (min 6 chars)" className="input" style={{ paddingLeft: "2.75rem" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
 
-          <button type="submit" className="btn-primary" disabled={loading} style={{ width: "100%", justifyContent: "center", marginTop: "0.5rem", opacity: loading ? 0.7 : 1 }}>
+          <button type="submit" className="btn-primary btn-lg" disabled={loading} style={{ width: "100%", justifyContent: "center", marginTop: "0.5rem", opacity: loading ? 0.7 : 1 }}>
             {loading ? <Loader2 size={16} style={{ animation: "spin 1s linear infinite" }} /> : null}
             {loading ? "Creating Account..." : "Create Account"}
           </button>
