@@ -89,7 +89,7 @@ export default function AnalysisDetailPage() {
           </div>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <span className="chip chip-blue">{new Date(analysis.createdAt).toLocaleString()}</span>
-            <span className="chip chip-purple">{analysis.fileName}</span>
+            <span className="chip chip-purple" style={{ whiteSpace: "normal", wordBreak: "break-all" }}>{analysis.fileName}</span>
           </div>
         </div>
 

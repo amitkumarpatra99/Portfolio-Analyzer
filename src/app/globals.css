@@ -167,6 +167,10 @@ body {
   font-weight: 500;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chip-purple {
@@ -193,6 +197,16 @@ body {
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+/* Button Variants */
+.btn-lg {
+  padding: 0.875rem 2.5rem;
+  font-size: 1rem;
+}
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.75rem;
+}
+
 /* Responsive utilities */
 @media (max-width: 768px) {
   .glass, .glass-card {
@@ -203,6 +217,11 @@ body {
   .btn-primary, .btn-secondary {
     padding: 0.625rem 1.25rem;
     font-size: 0.875rem;
+  }
+  
+  .btn-lg {
+    padding: 0.75rem 1.75rem;
+    font-size: 0.9375rem;
   }
 }
 
@@ -256,6 +275,10 @@ body {
   border-radius: 9999px;
   font-size: 0.8125rem;
   font-weight: 500;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .chip-purple {
   background: rgba(139, 92, 246, 0.15);

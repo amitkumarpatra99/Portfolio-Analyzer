@@ -252,12 +252,10 @@ export default function DashboardPage() {
                 borderTop: "1px solid rgba(255,255,255,0.06)",
                 paddingTop: "1.5rem"
               }}>
-                <Link href="/analyze" className="btn-primary" style={{
+                <Link href="/analyze" className="btn-primary btn-lg" style={{
                   textDecoration: "none",
                   width: "100%",
-                  justifyContent: "center",
-                  fontSize: "1rem",
-                  padding: "0.875rem 2rem"
+                  justifyContent: "center"
                 }}>
                   New Analysis <ArrowRight size={16} />
                 </Link>

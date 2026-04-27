@@ -89,7 +89,7 @@ export default function HistoryPage() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", flexWrap: "wrap" }}>
                     <div>
-                      <h3 style={{ fontWeight: 700, color: "#f1f5f9", fontSize: "1rem", marginBottom: "0.2rem" }}>{a.fileName}</h3>
+                      <h3 style={{ fontWeight: 700, color: "#f1f5f9", fontSize: "1rem", marginBottom: "0.2rem", wordBreak: "break-all" }}>{a.fileName}</h3>
                       <p style={{ color: "#64748b", fontSize: "0.8125rem" }}>
                         {new Date(a.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
                       </p>
@@ -100,8 +100,8 @@ export default function HistoryPage() {
                       </span>
                       <Link
                         href={`/history/${a._id}`}
-                        className="btn-secondary"
-                        style={{ padding: "0.4rem 0.8rem", fontSize: "0.75rem", textDecoration: "none" }}
+                        className="btn-secondary btn-sm"
+                        style={{ textDecoration: "none" }}
                       >
                         View details
                       </Link>

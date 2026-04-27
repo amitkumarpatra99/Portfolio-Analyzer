@@ -96,17 +96,16 @@ export default function LandingPage() {
 
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
             <button
-              className="btn-primary"
+              className="btn-primary btn-lg"
               onClick={() => router.push(session ? "/analyze" : "/auth/register")}
-              style={{ fontSize: "1rem", padding: "0.875rem 2rem" }}
             >
               Analyze Your Resume <ArrowRight size={18} />
             </button>
             {!session && (
               <Link
                 href="/auth/login"
-                className="btn-secondary"
-                style={{ fontSize: "1rem", padding: "0.875rem 2rem", textDecoration: "none" }}
+                className="btn-secondary btn-lg"
+                style={{ textDecoration: "none" }}
               >
                 Sign In
               </Link>
@@ -305,7 +304,6 @@ export default function LandingPage() {
                     width: "2rem",
                     height: "2px",
                     background: "linear-gradient(90deg, rgba(139, 92, 246, 0.5), transparent)",
-                    display: "none",
                   }} className="step-connector" />
                 )}
               </div>
@@ -338,9 +336,8 @@ export default function LandingPage() {
                 Join thousands of job seekers who improved their resume score.
               </p>
               <button
-                className="btn-primary"
+                className="btn-primary btn-lg"
                 onClick={() => router.push(session ? "/analyze" : "/auth/register")}
-                style={{ fontSize: "1rem", padding: "0.875rem 2.5rem" }}
               >
                 Start for Free <ArrowRight size={18} />
               </button>

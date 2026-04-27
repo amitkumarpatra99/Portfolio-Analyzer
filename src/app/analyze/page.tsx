@@ -226,10 +226,10 @@ export default function AnalyzePage() {
             )}
 
             <button
-              className="btn-primary"
+              className="btn-primary btn-lg"
               onClick={handleAnalyze}
               disabled={!file || loading}
-              style={{ width: "100%", justifyContent: "center", fontSize: "1rem", padding: "0.9rem", opacity: !file || loading ? 0.6 : 1, cursor: !file ? "not-allowed" : "pointer" }}
+              style={{ width: "100%", justifyContent: "center", opacity: !file || loading ? 0.6 : 1, cursor: !file ? "not-allowed" : "pointer" }}
             >
               {loading ? (
                 <>
