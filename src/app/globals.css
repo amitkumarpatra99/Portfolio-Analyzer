@@ -209,9 +209,10 @@ body {
 
 /* Responsive utilities */
 @media (max-width: 768px) {
-  .glass, .glass-card {
+  .glass, .glass-card, .glass-strong {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    padding: 1.5rem !important;
   }
 
   .btn-primary, .btn-secondary {
@@ -226,9 +227,10 @@ body {
 }
 
 @media (max-width: 480px) {
-  .glass, .glass-card {
+  .glass, .glass-card, .glass-strong {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    padding: 1.25rem !important;
   }
 
   .btn-primary, .btn-secondary {
