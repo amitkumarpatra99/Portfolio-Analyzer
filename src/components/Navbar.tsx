@@ -49,7 +49,7 @@ export default function Navbar() {
               width: 34,
               height: 34,
               borderRadius: "0.625rem",
-              background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
+              background: "linear-gradient(135deg, #06b6d4, #3b82f6)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -81,7 +81,7 @@ export default function Navbar() {
                   fontSize: "0.875rem",
                   fontWeight: 500,
                   color: active ? "#f1f5f9" : "#64748b",
-                  background: active ? "rgba(139, 92, 246, 0.12)" : "transparent",
+                  background: active ? "rgba(6, 182, 212, 0.12)" : "transparent",
                   transition: "all 0.2s",
                 }}
               >

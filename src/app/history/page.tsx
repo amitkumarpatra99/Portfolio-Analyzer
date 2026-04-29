@@ -53,7 +53,7 @@ export default function HistoryPage() {
   if (loading || status === "loading") {
     return (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 64px)" }}>
-        <Loader2 size={32} color="#8b5cf6" style={{ animation: "spin 1s linear infinite" }} />
+        <Loader2 size={32} color="#06b6d4" style={{ animation: "spin 1s linear infinite" }} />
         <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
       </div>
     );
@@ -63,7 +63,7 @@ export default function HistoryPage() {
     <div className="hero-bg" style={{ minHeight: "calc(100vh - 64px)", padding: "2.5rem 1.5rem" }}>
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
         <div style={{ marginBottom: "2rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <History size={28} color="#8b5cf6" />
+          <History size={28} color="#06b6d4" />
           <div>
             <h1 style={{ fontFamily: "Sora, Inter, sans-serif", fontSize: "2rem", fontWeight: 700, color: "#f1f5f9" }}>
               Analysis History
@@ -137,7 +137,7 @@ export default function HistoryPage() {
                   {a.skills.length > 0 && (
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginTop: "0.875rem" }}>
                       {a.skills.slice(0, 6).map((s) => (
-                        <span key={s} className="chip chip-purple" style={{ fontSize: "0.75rem", padding: "0.2rem 0.65rem" }}>{s}</span>
+                        <span key={s} className="chip chip-cyan" style={{ fontSize: "0.75rem", padding: "0.2rem 0.65rem" }}>{s}</span>
                       ))}
                       {a.skills.length > 6 && (
                         <span className="chip chip-blue" style={{ fontSize: "0.75rem", padding: "0.2rem 0.65rem" }}>+{a.skills.length - 6}</span>

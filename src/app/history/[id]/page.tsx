@@ -56,7 +56,7 @@ export default function AnalysisDetailPage() {
   if (loading) {
     return (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 64px)" }}>
-        <Loader2 size={32} color="#8b5cf6" style={{ animation: "spin 1s linear infinite" }} />
+        <Loader2 size={32} color="#06b6d4" style={{ animation: "spin 1s linear infinite" }} />
       </div>
     );
   }
@@ -89,7 +89,7 @@ export default function AnalysisDetailPage() {
           </div>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <span className="chip chip-blue">{new Date(analysis.createdAt).toLocaleString()}</span>
-            <span className="chip chip-purple" style={{ whiteSpace: "normal", wordBreak: "break-all" }}>{analysis.fileName}</span>
+            <span className="chip chip-cyan" style={{ whiteSpace: "normal", wordBreak: "break-all" }}>{analysis.fileName}</span>
           </div>
         </div>
 
@@ -159,7 +159,7 @@ export default function AnalysisDetailPage() {
           <h3 style={{ fontWeight: 700, color: "#f1f5f9", marginBottom: "0.75rem" }}>Detected skills</h3>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
             {analysis.skills.map((skill) => (
-              <span key={skill} className="chip chip-purple">{skill}</span>
+              <span key={skill} className="chip chip-cyan">{skill}</span>
             ))}
           </div>
         </div>

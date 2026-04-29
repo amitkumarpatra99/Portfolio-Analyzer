@@ -13,7 +13,7 @@ export default function ScoreRing({
   size = 140,
   strokeWidth = 10,
   label = "Score",
-  color = "#8b5cf6",
+  color = "#06b6d4",
 }: ScoreRingProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -27,7 +27,7 @@ export default function ScoreRing({
     return "#ef4444";
   };
 
-  const ringColor = color === "#8b5cf6" ? getColor(score) : color;
+  const ringColor = color === "#06b6d4" ? getColor(score) : color;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>

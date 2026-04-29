@@ -41,7 +41,7 @@ export default function DashboardPage() {
   if (status === "loading" || loading) {
     return (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 64px)" }}>
-        <Loader2 size={32} color="#8b5cf6" style={{ animation: "spin 1s linear infinite" }} />
+        <Loader2 size={32} color="#06b6d4" style={{ animation: "spin 1s linear infinite" }} />
         <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
       </div>
     );
@@ -52,7 +52,7 @@ export default function DashboardPage() {
   const allSkills = [...new Set(analyses.flatMap((a) => a.skills))].slice(0, 8);
 
   const stats = [
-    { icon: FileSearch, label: "Total Analyses", value: analyses.length, color: "#8b5cf6", bg: "rgba(139, 92, 246, 0.1)" },
+    { icon: FileSearch, label: "Total Analyses", value: analyses.length, color: "#06b6d4", bg: "rgba(6, 182, 212, 0.1)" },
     { icon: TrendingUp, label: "Average Score", value: avgScore, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)", suffix: "/100" },
     { icon: Award, label: "Best Score", value: bestScore, color: "#10b981", bg: "rgba(16, 185, 129, 0.1)", suffix: "/100" },
   ];
@@ -154,7 +154,7 @@ export default function DashboardPage() {
               </h2>
               {analyses.length > 0 && (
                 <Link href="/history" style={{
-                  color: "#a78bfa",
+                  color: "#67e8f9",
                   textDecoration: "none",
                   fontSize: "0.875rem",
                   display: "flex",
@@ -162,8 +162,8 @@ export default function DashboardPage() {
                   gap: "0.25rem",
                   padding: "0.5rem 1rem",
                   borderRadius: "0.5rem",
-                  background: "rgba(139, 92, 246, 0.1)",
-                  border: "1px solid rgba(139, 92, 246, 0.2)",
+                  background: "rgba(6, 182, 212, 0.1)",
+                  border: "1px solid rgba(6, 182, 212, 0.2)",
                   transition: "all 0.2s ease",
                 }}>
                   View all <ArrowRight size={13} />
@@ -243,7 +243,7 @@ export default function DashboardPage() {
                 marginBottom: "2rem"
               }}>
                 {allSkills.map((skill) => (
-                  <span key={skill} className="chip chip-purple">{skill}</span>
+                  <span key={skill} className="chip chip-cyan">{skill}</span>
                 ))}
                 {allSkills.length === 0 && <p style={{ color: "#64748b", fontSize: "0.875rem" }}>Skills will appear here after analysis.</p>}
               </div>

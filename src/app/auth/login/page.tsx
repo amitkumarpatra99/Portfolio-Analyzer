@@ -59,7 +59,7 @@ export default function LoginPage() {
               width: 52,
               height: 52,
               borderRadius: "1rem",
-              background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
+              background: "linear-gradient(135deg, #06b6d4, #3b82f6)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -148,7 +148,7 @@ export default function LoginPage() {
 
         <p style={{ textAlign: "center", color: "#64748b", fontSize: "0.9rem", marginTop: "1.5rem" }}>
           Don&apos;t have an account?{" "}
-          <Link href="/auth/register" style={{ color: "#a78bfa", textDecoration: "none", fontWeight: 500 }}>
+          <Link href="/auth/register" style={{ color: "#67e8f9", textDecoration: "none", fontWeight: 500 }}>
             Sign up free
           </Link>
         </p>

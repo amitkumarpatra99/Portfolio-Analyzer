@@ -174,12 +174,12 @@ export default function AnalyzePage() {
                 textAlign: "center",
                 cursor: "pointer",
                 border: isDragActive
-                  ? "2px dashed #8b5cf6"
+                  ? "2px dashed #06b6d4"
                   : file
                     ? "2px dashed #10b981"
                     : "2px dashed rgba(255,255,255,0.1)",
                 transition: "all 0.2s",
-                background: isDragActive ? "rgba(139, 92, 246, 0.05)" : undefined,
+                background: isDragActive ? "rgba(6, 182, 212, 0.05)" : undefined,
               }}
             >
               <input {...getInputProps()} />
@@ -193,7 +193,7 @@ export default function AnalyzePage() {
                 </>
               ) : (
                 <>
-                  <Upload size={40} color={isDragActive ? "#8b5cf6" : "#475569"} style={{ margin: "0 auto 1rem" }} />
+                  <Upload size={40} color={isDragActive ? "#06b6d4" : "#475569"} style={{ margin: "0 auto 1rem" }} />
                   <p style={{ color: "#f1f5f9", fontWeight: 600, marginBottom: "0.25rem" }}>
                     {isDragActive ? "Drop it here!" : "Drop your resume here"}
                   </p>
@@ -319,10 +319,10 @@ export default function AnalyzePage() {
 
               {/* Skills */}
               {result.skills.length > 0 && (
-                <Section title="Detected Skills" icon={<Zap size={16} color="#8b5cf6" />}>
+                <Section title="Detected Skills" icon={<Zap size={16} color="#06b6d4" />}>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
                     {result.skills.map((s) => (
-                      <span key={s} className="chip chip-purple">{s}</span>
+                      <span key={s} className="chip chip-cyan">{s}</span>
                     ))}
                   </div>
                 </Section>

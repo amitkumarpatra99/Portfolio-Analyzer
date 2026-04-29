@@ -8,8 +8,8 @@ import { BrainCircuit, Zap, Target, BarChart3, ArrowRight, CheckCircle, Star } f
 const features = [
   {
     icon: BarChart3,
-    color: "#8b5cf6",
-    bg: "rgba(139, 92, 246, 0.1)",
+    color: "#06b6d4",
+    bg: "rgba(6, 182, 212, 0.1)",
     title: "AI Resume Score",
     desc: "Get an instant 0-100 score with detailed strengths and weaknesses breakdown from our advanced AI.",
   },
@@ -57,12 +57,12 @@ export default function LandingPage() {
               padding: "0.5rem 1.25rem",
               fontSize: "0.875rem",
               fontWeight: 500,
-              color: "#a78bfa",
+              color: "#67e8f9",
               marginBottom: "2rem",
               backdropFilter: "blur(12px)",
             }}
           >
-            <Star size={14} fill="#a78bfa" /> Powered by Google Gemini AI
+            <Star size={14} fill="#67e8f9" /> Powered by Google Gemini AI
           </div>
 
           <h1
@@ -173,7 +173,7 @@ export default function LandingPage() {
               return (
                 <div
                   key={f.title}
-                  className="glass-card glow-purple"
+                  className="glass-card glow-cyan"
                   style={{
                     borderRadius: "1.5rem",
                     padding: "2.5rem",
@@ -261,14 +261,14 @@ export default function LandingPage() {
                 padding: "2rem",
                 textAlign: "center",
                 position: "relative",
-                border: "1px solid rgba(139, 92, 246, 0.2)",
+                border: "1px solid rgba(6, 182, 212, 0.2)",
               }}>
                 <div
                   style={{
                     width: 64,
                     height: 64,
                     borderRadius: "50%",
-                    background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
+                    background: "linear-gradient(135deg, #06b6d4, #3b82f6)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -276,7 +276,7 @@ export default function LandingPage() {
                     fontSize: "1rem",
                     fontWeight: 800,
                     color: "white",
-                    boxShadow: "0 8px 24px rgba(139, 92, 246, 0.3)",
+                    boxShadow: "0 8px 24px rgba(6, 182, 212, 0.3)",
                   }}
                 >
                   {s.step}
@@ -303,7 +303,7 @@ export default function LandingPage() {
                     transform: "translateY(-50%)",
                     width: "2rem",
                     height: "2px",
-                    background: "linear-gradient(90deg, rgba(139, 92, 246, 0.5), transparent)",
+                    background: "linear-gradient(90deg, rgba(6, 182, 212, 0.5), transparent)",
                   }} className="step-connector" />
                 )}
               </div>
@@ -317,11 +317,11 @@ export default function LandingPage() {
               style={{
                 display: "inline-block",
                 borderRadius: "1.5rem",
-                border: "1px solid rgba(139, 92, 246, 0.3)",
-                boxShadow: "0 16px 48px rgba(139, 92, 246, 0.2)",
+                border: "1px solid rgba(6, 182, 212, 0.3)",
+                boxShadow: "0 16px 48px rgba(6, 182, 212, 0.2)",
               }}
             >
-              <BrainCircuit size={40} color="#8b5cf6" style={{ marginBottom: "1rem" }} />
+              <BrainCircuit size={40} color="#06b6d4" style={{ marginBottom: "1rem" }} />
               <h3
                 style={{
                   fontWeight: 700,
