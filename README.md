@@ -20,12 +20,13 @@ Upload a PDF resume, get instant ATS insights, resume strength scores, missing k
 
 ## ?? Pages
 
-- `/` — Landing page with product overview and CTA
-- `/auth/register` — Create an account
-- `/auth/login` — Sign in
-- `/analyze` — Upload resume and run AI analysis
-- `/dashboard` — Overview of recent analyses and performance metrics
-- `/history` — View saved analysis history and delete old reports
+- `/` ï¿½ Landing page with product overview and CTA
+- `/auth/register` ï¿½ Create an account
+- `/auth/login` ï¿½ Sign in
+- `/analyze` ï¿½ Upload resume and run AI analysis
+- `/dashboard` ï¿½ Overview of recent analyses and performance metrics
+- `/history` â€” View saved analysis history
+- `/history/[id]` â€” View detailed analysis report
 
 ---
 
@@ -44,10 +45,10 @@ Upload a PDF resume, get instant ATS insights, resume strength scores, missing k
 
 ## ?? Key backend routes
 
-- `POST /api/register` — create a new user account
-- `POST /api/analyze` — upload resume, extract text, analyze with Gemini AI, optionally match a job description
-- `GET /api/history` — fetch authenticated user analysis history
-- `DELETE /api/history?id=<analysisId>` — delete a saved analysis
+- `POST /api/register` ï¿½ create a new user account
+- `POST /api/analyze` ï¿½ upload resume, extract text, analyze with Gemini AI, optionally match a job description
+- `GET /api/history` ï¿½ fetch authenticated user analysis history
+- `DELETE /api/history?id=<analysisId>` ï¿½ delete a saved analysis
 
 ---
 
