@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getSessionToken } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import Analysis from "@/models/Analysis";
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const token = await getSessionToken(req);
+    if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -18,7 +17,7 @@ export async function GET(req: NextRequest) {
     }
 
     await connectDB();
-    const userId = (session.user as { id?: string }).id ?? session.user.email!;
+    const userId = token.id ?? token.email!;
     const analysis = await Analysis.findOne({ _id: id, userId }).lean();
     if (!analysis) {
       return NextResponse.json({ error: "Analysis not found" }, { status: 404 });

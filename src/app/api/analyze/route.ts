@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getSessionToken } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import Analysis from "@/models/Analysis";
 import { analyzeResume, matchJobDescription } from "@/lib/gemini";
@@ -9,8 +8,8 @@ const pdfParse = require("pdf-parse");
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const token = await getSessionToken(req);
+    if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -44,7 +43,7 @@ export async function POST(req: NextRequest) {
 
     // Save to DB
     await connectDB();
-    const userId = (session.user as { id?: string }).id ?? session.user.email!;
+    const userId = token.id ?? token.email!;
     const analysis = await Analysis.create({
       userId,
       fileName: file.name,

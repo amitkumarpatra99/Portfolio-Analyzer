@@ -1,4 +1,5 @@
 import type { NextAuthOptions } from "next-auth";
+import { getToken } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import connectDB from "@/lib/mongodb";
@@ -63,3 +64,9 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+export async function getSessionToken(req: import("next/server").NextRequest) {
+  return (await getToken({ req, secret: process.env.NEXTAUTH_SECRET })) as
+    | { id?: string; email?: string; name?: string }
+    | null;
+}
