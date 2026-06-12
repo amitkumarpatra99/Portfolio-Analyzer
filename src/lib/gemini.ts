@@ -4,6 +4,15 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
+function extractJSON(text: string): string {
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  if (start !== -1 && end !== -1 && end > start) {
+    return text.substring(start, end + 1);
+  }
+  return text;
+}
+
 export async function analyzeResume(resumeText: string): Promise<AnalysisResult> {
   const prompt = `You are an expert career coach and ATS (Applicant Tracking System) specialist. Analyze the following resume and return a JSON object with EXACTLY this structure:
 
@@ -31,7 +40,7 @@ ${resumeText}`;
 
   const result = await model.generateContent(prompt);
   const text = result.response.text().trim();
-  const cleaned = text.replace(/^```json\s*/, "").replace(/^```\s*/, "").replace(/```$/, "").trim();
+  const cleaned = extractJSON(text);
   return JSON.parse(cleaned) as AnalysisResult;
 }
 
@@ -59,7 +68,7 @@ ${jobDescription}`;
 
   const result = await model.generateContent(prompt);
   const text = result.response.text().trim();
-  const cleaned = text.replace(/^```json\s*/, "").replace(/^```\s*/, "").replace(/```$/, "").trim();
+  const cleaned = extractJSON(text);
   return JSON.parse(cleaned) as JobMatchResult;
 }
 

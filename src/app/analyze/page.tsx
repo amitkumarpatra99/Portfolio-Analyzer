@@ -38,7 +38,7 @@ function Section({ title, icon, children, defaultOpen = false }: {
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="glass" style={{ borderRadius: "1rem", overflow: "hidden" }}>
+    <div className="glass no-pad" style={{ borderRadius: "1rem", overflow: "hidden" }}>
       <button
         onClick={() => setOpen(!open)}
         style={{
