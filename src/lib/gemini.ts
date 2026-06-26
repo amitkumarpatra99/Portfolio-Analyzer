@@ -72,6 +72,51 @@ ${jobDescription}`;
   return JSON.parse(cleaned) as JobMatchResult;
 }
 
+export async function improveResume(
+  resumeText: string,
+  weaknesses: string[],
+  improvements: string[],
+  missingKeywords: string[],
+  jobDescription?: string
+): Promise<ImprovedContent> {
+  const jobContext = jobDescription && jobDescription.trim().length > 20
+    ? `\nTarget Job Description:\n${jobDescription}`
+    : "";
+
+  const prompt = `You are an expert resume writer and ATS optimization specialist. 
+Based on the candidate's original resume, identified weaknesses, actionable improvements, and missing keywords, generate tailored improvements. 
+
+Original Resume:
+${resumeText}
+
+Identified Weaknesses:
+${weaknesses.map(w => `- ${w}`).join("\n")}
+
+Actionable Improvements:
+${improvements.map(i => `- ${i}`).join("\n")}
+
+Missing Keywords/Skills:
+${missingKeywords.map(k => `- ${k}`).join("\n")}${jobContext}
+
+Provide the response as a JSON object with EXACTLY this structure:
+{
+  "improvedSummary": "<A compelling, ATS-friendly professional summary (3-4 sentences) that highlights top skills and matches the target job/keywords if provided.>",
+  "improvedExperience": [
+    "<Example rewritten experience bullet point 1 (use STAR/XYZ method, quantify results, integrate missing keywords/action verbs)>",
+    "<Example rewritten experience bullet point 2 (use STAR/XYZ method, quantify results, integrate missing keywords/action verbs)>",
+    "<Example rewritten experience bullet point 3 (use STAR/XYZ method, quantify results, integrate missing keywords/action verbs)>"
+  ],
+  "skillsIntegration": "<A brief paragraph advising the candidate on how to integrate the missing keywords into their Skills or Professional Experience sections naturally.>"
+}
+
+Respond ONLY with valid JSON, no markdown, no explanation.`;
+
+  const result = await model.generateContent(prompt);
+  const textResponse = result.response.text().trim();
+  const cleaned = extractJSON(textResponse);
+  return JSON.parse(cleaned) as ImprovedContent;
+}
+
 export interface AnalysisResult {
   score: number;
   summary: string;
@@ -89,4 +134,10 @@ export interface JobMatchResult {
   missingSkills: string[];
   tailoringSuggestions: string[];
   summary: string;
+}
+
+export interface ImprovedContent {
+  improvedSummary: string;
+  improvedExperience: string[];
+  skillsIntegration: string;
 }
